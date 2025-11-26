@@ -12,6 +12,17 @@ Array.prototype.slice.call(forms)
   });
 
 let currentFilter = 'all';
+let editId = null
+
+function editTransaction(id) {
+    editId = id
+    let editedTransaction = transactions.find((element) => element.id == id)
+    document.getElementById('text').value = editedTransaction.text
+    document.getElementById('amount').value = editedTransaction.amount
+    document.getElementById('adding-btn').innerHTML = `Edit transaction`
+    document.getElementById('adding-btn').classList.remove('btn-primary')
+    document.getElementById('adding-btn').classList.add('btn-warning')
+}
 
 function setFilter(filterType) {
     currentFilter = filterType;
@@ -30,16 +41,37 @@ function addTransaction(e) {
     e.preventDefault()
     let text = document.getElementById('text').value
     let amount = document.getElementById('amount').value
-    if (text == "" || amount == "") {
-        return
+    if (editId == null) 
+        {
+            if (text == "" || amount == "") {
+                return
+            }
+            let newTransaction = {
+                id: Date.now(),
+                text: text,
+                amount: +amount
+            }
+            transactions.push(newTransaction)
+            addTransactionDOM(newTransaction); // <--- Рисуем то, что только что добавили 
+        }
+    else {
+        transactions = transactions.map(item => {
+            if (item.id === editId) {
+                return {
+                    id: editId,        
+                    text: text,  
+                    amount: +amount
+                };
+            } else {
+                return item;
+            }
+        });
+        editId = null
+        document.getElementById('adding-btn').classList.add('btn-primary')
+        document.getElementById('adding-btn').classList.remove('btn-warning')
+        document.getElementById('adding-btn').innerHTML = `Add transaction`
+        init()
     }
-    let newTransaction = {
-        id: Date.now(),
-        text: text,
-        amount: +amount
-    }
-    transactions.push(newTransaction)
-    addTransactionDOM(newTransaction); // <--- Рисуем то, что только что добавили
     text.value = '';
     amount.value = '';
     updateLocalStorage()
@@ -55,6 +87,10 @@ function init() {
     }
     filteredTransactions.forEach(addTransactionDOM);
     updateValues(); 
+    document.getElementById('adding-btn').classList.add('btn-primary')
+    document.getElementById('adding-btn').classList.remove('btn-warning')
+    document.getElementById('adding-btn').innerHTML = `Add transaction`
+    
 }
 
 function updateValues() {
@@ -84,6 +120,10 @@ function addTransactionDOM(transaction) {
         <span class="fw-bold">${transaction.text}</span>
         <span>
             <span class="fw-bold">${sign}$${Math.abs(transaction.amount)}</span>
+            
+            <button class="btn btn-sm btn-outline-warning border-0 ms-2" onclick="editTransaction(${transaction.id})">
+                <i class="bi bi-pencil-square"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger border-0 ms-2" onclick="removeTransaction(${transaction.id})">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -91,6 +131,8 @@ function addTransactionDOM(transaction) {
     `;
      list.appendChild(item);
     updateValues()
+    document.getElementById('text').value = ''
+    document.getElementById('amount').value = ''
 }
 
 document.querySelector('form').addEventListener('submit', addTransaction)
