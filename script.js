@@ -11,6 +11,13 @@ Array.prototype.slice.call(forms)
     }, false)
   });
 
+let currentFilter = 'all';
+
+function setFilter(filterType) {
+    currentFilter = filterType;
+    init();
+}
+
 function updateLocalStorage() {
     localStorage.setItem('transactions', JSON.stringify(transactions));
 }
@@ -40,10 +47,14 @@ function addTransaction(e) {
 
 function init() {
     list.innerHTML = '';
-    transactions.forEach(addTransactionDOM);
-    
-    // Сюда потом добавим пересчет баланса
-    updateValues()
+    let filteredTransactions = transactions;
+    if (currentFilter === 'plus') {
+        filteredTransactions = transactions.filter(item => item.amount > 0);
+    } else if (currentFilter === 'minus') {
+        filteredTransactions = transactions.filter(item => item.amount < 0);
+    }
+    filteredTransactions.forEach(addTransactionDOM);
+    updateValues(); 
 }
 
 function updateValues() {
