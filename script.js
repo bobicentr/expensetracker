@@ -57,7 +57,7 @@ function editTransaction(id) {
     textInput.value = itemToEdit.text;
     amountInput.value = itemToEdit.amount;
     
-    addBtn.innerText = 'Update transaction';
+    addBtn.innerText = 'Edit transaction';
     addBtn.classList.remove('btn-primary');
     addBtn.classList.add('btn-warning');
 }
@@ -103,7 +103,7 @@ function addTransactionDOM(transaction) {
         <span class="fw-bold text-break">${transaction.text}</span>
         <span class="d-flex align-items-center">
             <span class="fw-bold me-2">${sign}$${Math.abs(transaction.amount)}</span>
-            <button class="btn btn-sm btn-outline-secondary border-0" onclick="editTransaction(${transaction.id})">
+            <button class="btn btn-sm btn-outline-warning border-0" onclick="editTransaction(${transaction.id})">
                 <i class="bi bi-pencil-square"></i>
             </button>
             <button class="btn btn-sm btn-outline-danger border-0 ms-1" onclick="removeTransaction(${transaction.id})">
@@ -128,9 +128,9 @@ function updateValues() {
         .filter(item => item < 0)
         .reduce((acc, item) => (acc += item), 0) * -1);
 
-    document.getElementById('balance').innerText = `$${total.toFixed(2)}`;
-    document.getElementById('money-plus').innerText = `+$${income.toFixed(2)}`;
-    document.getElementById('money-minus').innerText = `-$${expense.toFixed(2)}`;
+    document.getElementById('balance').innerText = `${total.toFixed(2)}`;
+    document.getElementById('money-plus').innerText = `${income.toFixed(2)}`;
+    document.getElementById('money-minus').innerText = `${expense.toFixed(2)}`;
 }
 
 function setFilter(filterType) {
