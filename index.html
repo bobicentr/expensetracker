@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Иконки -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Expense Tracker</title>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5" style="max-width: 500px;">
+        
+        <div class="text-center mb-4">
+            <h2>Expense Tracker</h2>
+            <h1 class="display-4 fw-bold">$<span id="balance">0.00</span></h1>
+        </div>
+
+        <div class="d-flex justify-content-between gap-3 mb-4">
+            <div class="w-50 bg-white shadow-sm p-3 rounded text-center border-bottom border-success border-5">
+                <div class="text-muted">Income</div>
+                <div class="text-success fw-bold fs-5">+$<span id="money-plus">0.00</span></div>
+            </div>
+            <div class="w-50 bg-white shadow-sm p-3 rounded text-center border-bottom border-danger border-5">
+                <div class="text-muted">Expense</div>
+                <div class="text-danger fw-bold fs-5">-$<span id="money-minus">0.00</span></div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <h4>History</h4>
+            <div class="btn-group w-100 mb-3" role="group">
+                <!-- data-filter — наш кастомный атрибут, чтобы понимать, на что нажали -->
+                <input type="radio" class="btn-check" name="btnradio" id="filter-all" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="filter-all" onclick="setFilter('all')">All</label>
+            
+                <input type="radio" class="btn-check" name="btnradio" id="filter-plus" autocomplete="off">
+                <label class="btn btn-outline-success" for="filter-plus" onclick="setFilter('plus')">Income</label>
+            
+                <input type="radio" class="btn-check" name="btnradio" id="filter-minus" autocomplete="off">
+                <label class="btn btn-outline-danger" for="filter-minus" onclick="setFilter('minus')">Expense</label>
+            </div>
+            <ul id="list" class="list-group list-group-flush">
+            </ul>
+        </div>
+
+        <div class="bg-white p-3 shadow-sm rounded">
+            <h4>Add new transaction</h4>
+            <form id="form">
+                <div class="mb-3">
+                    <label for="text" class="form-label">Text</label>
+                    <input type="text" class="form-control" id="text" placeholder="Enter text..." required>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <div class="form-text mb-1">(negative - expense, positive - income)</div>
+                    <input type="number" class="form-control" id="amount" placeholder="Enter amount..." required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Add Transaction</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
